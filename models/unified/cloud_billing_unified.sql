@@ -57,7 +57,12 @@ WITH gcp_data AS (
         usage_pricing_unit AS pricing_unit,
 
         -- Pricing model
-        pricing_model
+        pricing_model,
+
+        -- Custom columns
+        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        COALESCE({{ col.gcp_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
+        {% endfor %}
 
     FROM {{ ref('int_cloud_billing_gcp_enriched') }}
 )
@@ -114,7 +119,12 @@ WITH gcp_data AS (
         pricing_unit AS pricing_unit,
 
         -- Pricing model
-        pricing_model
+        pricing_model,
+
+        -- Custom columns
+        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        COALESCE({{ col.aws_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
+        {% endfor %}
 
     FROM {{ ref('int_cloud_billing_aws_enriched') }}
 )
@@ -171,7 +181,12 @@ WITH gcp_data AS (
         pricing_unit,
 
         -- Pricing model
-        pricing_model
+        pricing_model,
+
+        -- Custom columns
+        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        COALESCE({{ col.azure_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
+        {% endfor %}
 
     FROM {{ ref('int_cloud_billing_azure_enriched') }}
 )

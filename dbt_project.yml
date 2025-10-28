@@ -52,6 +52,10 @@ vars:
       user_tags: []
       system_tags: []
 
+    # Unified layer configuration
+    unified:
+      custom_columns: []  # Consumer can define tag/label mappings across vendors
+
 models:
   dbt_finops_focus:
     staging:

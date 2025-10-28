@@ -5,23 +5,18 @@ sources:
     description: |
       Azure FOCUS Export - FinOps FOCUS-compliant billing data.
 
-      **Required:** Define this source in your consuming project's
-      `models/staging/_sources.yml` with your specific database, schema,
-      and table names.
-
-      Example:
+      Configure the source location in your dbt_project.yml:
       ```yaml
-      sources:
-        - name: azure_billing
-          database: your-project-id
-          schema: your_azure_dataset
-          tables:
-            - name: azure_focus_data
-              identifier: your_actual_focus_table_name
+      vars:
+        finops_focus:
+          azure:
+            database: your-project-id
+            schema: your_azure_dataset
+            table_identifier: your_actual_focus_table_name
       ```
-
+    database: "{{ var('finops_focus', {}).get('azure', {}).get('database', target.database) }}"
+    schema: "{{ var('finops_focus', {}).get('azure', {}).get('schema', 'azure_billing_data') }}"
     tables:
       - name: azure_focus_data
-        description: |
-          This is a placeholder. Override in your project's _sources.yml with your
-          actual Azure FOCUS table name using the 'identifier' property.
+        identifier: "{{ var('finops_focus', {}).get('azure', {}).get('table_identifier', 'azure_focus_billing_data') }}"
+        description: Raw Azure FOCUS billing export table

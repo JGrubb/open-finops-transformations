@@ -93,15 +93,15 @@ renamed AS (
             FROM UNNEST(credits)
             WHERE type != 'PROMOTION'
         ) AS credits_total_less_promotions,
-        {% for label in var('gcp_billing', {}).get('labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('labels', []) %}
         (SELECT value FROM UNNEST(labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('gcp_billing', {}).get('project_labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('project_labels', []) %}
         (SELECT value FROM UNNEST(project.labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS project_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('gcp_billing', {}).get('system_labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('system_labels', []) %}
         (SELECT value FROM UNNEST(system_labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS system_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('/', '_') | replace('-', '_') }}{% endif %}{{ "," if not loop.last else "" }}
         {% endfor %}

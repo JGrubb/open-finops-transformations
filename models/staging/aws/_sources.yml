@@ -5,23 +5,18 @@ sources:
     description: |
       AWS Cost and Usage Report (CUR) - Detailed billing data.
 
-      **Required:** Define this source in your consuming project's
-      `models/staging/_sources.yml` with your specific database, schema,
-      and table names.
-
-      Example:
+      Configure the source location in your dbt_project.yml:
       ```yaml
-      sources:
-        - name: aws_billing
-          database: your-project-id
-          schema: your_cur_dataset
-          tables:
-            - name: aws_cur_data
-              identifier: your_actual_cur_table_name
+      vars:
+        finops_focus:
+          aws:
+            database: your-project-id
+            schema: your_cur_dataset
+            table_identifier: your_actual_cur_table_name
       ```
-
+    database: "{{ var('finops_focus', {}).get('aws', {}).get('database', target.database) }}"
+    schema: "{{ var('finops_focus', {}).get('aws', {}).get('schema', 'aws_billing_data') }}"
     tables:
       - name: aws_cur_data
-        description: |
-          This is a placeholder. Override in your project's _sources.yml with your
-          actual AWS CUR table name using the 'identifier' property.
+        identifier: "{{ var('finops_focus', {}).get('aws', {}).get('table_identifier', 'aws_cur_data') }}"
+        description: Raw AWS Cost and Usage Report billing export table

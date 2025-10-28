@@ -82,13 +82,13 @@ final AS (
 
         -- Project metadata
         project_ancestors,
-        {% for label in var('gcp_billing', {}).get('labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('labels', []) %}
         label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('gcp_billing', {}).get('project_labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('project_labels', []) %}
         project_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('gcp_billing', {}).get('system_labels', []) %}
+        {% for label in var('finops_focus', {}).get('gcp', {}).get('system_labels', []) %}
         system_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('/', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
         cost AS list_cost,
