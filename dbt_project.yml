@@ -1,0 +1,77 @@
+name: 'dbt_finops_focus'
+version: '0.1.0'
+config-version: 2
+
+profile: 'default'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+vars:
+  finops_focus:
+    # Vendor enablement - consumers MUST set this
+    enabled_vendors: []  # Options: ['gcp', 'aws', 'azure']
+
+    # Schema configuration - consumers can override
+    schemas:
+      staging: staging
+      intermediate: staging
+      unified: marts
+
+    # GCP-specific configuration
+    gcp:
+      labels: []
+      project_labels: []
+      system_labels:
+        - key: compute.googleapis.com/machine_spec
+          name: machine_spec
+        - key: compute.googleapis.com/cores
+          name: cores
+        - key: compute.googleapis.com/memory
+          name: memory
+        - key: compute.googleapis.com/is_unused_reservation
+          name: is_unused_reservation
+        - key: storage.googleapis.com/object_state
+          name: object_state
+
+    # AWS-specific configuration
+    aws:
+      user_tags: []
+      system_tags: []
+
+    # Azure-specific configuration
+    azure:
+      user_tags: []
+      system_tags: []
+
+models:
+  dbt_finops_focus:
+    staging:
+      +materialized: view
+      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('staging', 'staging') }}"
+      gcp:
+        +enabled: "{{ 'gcp' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+      aws:
+        +enabled: "{{ 'aws' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+      azure:
+        +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+    intermediate:
+      +materialized: table
+      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('intermediate', 'staging') }}"
+      gcp:
+        +enabled: "{{ 'gcp' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+      aws:
+        +enabled: "{{ 'aws' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+      azure:
+        +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+    unified:
+      +materialized: table
+      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('unified', 'marts') }}"
