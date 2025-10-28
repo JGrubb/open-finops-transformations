@@ -74,6 +74,24 @@ vars:
           name: machine_spec
 ```
 
+#### GCP Export Type
+
+Configure which GCP billing export type you use:
+
+```yaml
+vars:
+  finops_focus:
+    enabled_vendors: ['gcp']
+    gcp:
+      export_type: standard  # Options: 'standard' or 'resource'
+```
+
+**Options:**
+- **`standard`** (default): Standard billing export. Resource columns (`resource_name`, `resource_global_name`) will be NULL.
+- **`resource`**: Resource-level billing export with detailed usage data. Includes full resource identification.
+
+**Note:** Resource-level exports provide more granular data but are larger and may incur additional BigQuery costs.
+
 #### AWS Tag Extraction
 
 ```yaml

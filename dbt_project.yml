@@ -27,7 +27,11 @@ vars:
       unified: marts
 
     # GCP-specific configuration
+    # export_type: Billing export type - 'standard' (default) or 'resource'
+    #   - standard: Resource columns (resource_name, resource_global_name) set to NULL
+    #   - resource: Resource columns extracted from source (requires resource-level export)
     gcp:
+      export_type: standard
       labels: []
       project_labels: []
       system_labels:
@@ -68,7 +72,6 @@ models:
       azure:
         +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
     intermediate:
-      +materialized: table
       +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('intermediate', 'staging') }}"
       gcp:
         +enabled: "{{ 'gcp' in var('finops_focus', {}).get('enabled_vendors', []) }}"
@@ -77,5 +80,4 @@ models:
       azure:
         +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
     unified:
-      +materialized: table
       +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('unified', 'marts') }}"

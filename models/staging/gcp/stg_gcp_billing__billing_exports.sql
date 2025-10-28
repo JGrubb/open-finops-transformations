@@ -18,8 +18,13 @@ renamed AS (
         project.name AS project_name,
         project.ancestry_numbers AS project_ancestry_numbers,
         project.ancestors AS project_ancestors,
+        {% if var('finops_focus', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
         resource.name AS resource_name,
         resource.global_name AS resource_global_name,
+        {% else %}
+        NULL AS resource_name,
+        NULL AS resource_global_name,
+        {% endif %}
         location.location AS location_location,
         location.country AS location_country,
         location.region AS location_region,
@@ -52,7 +57,11 @@ renamed AS (
         adjustment_info.type AS adjustment_info_type,
         consumption_model.id AS consumption_model_id,
         consumption_model.description AS consumption_model_description,
+        {% if var('finops_focus', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
         subscription.instance_id AS subscription_instance_id,
+        {% else %}
+        NULL AS subscription_instance_id,
+        {% endif %}
 
         (
             SELECT SUM(CAST(amount AS NUMERIC))
