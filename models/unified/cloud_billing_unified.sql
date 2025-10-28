@@ -1,10 +1,10 @@
 {{
   config(
-    enabled=var('finops_focus', {}).get('enabled_vendors', [])|length > 0
+    enabled=var('open_finops', {}).get('enabled_vendors', [])|length > 0
   )
 }}
 
-{% set enabled_vendors = var('finops_focus', {}).get('enabled_vendors', []) %}
+{% set enabled_vendors = var('open_finops', {}).get('enabled_vendors', []) %}
 
 {% if 'gcp' in enabled_vendors %}
 WITH gcp_data AS (
@@ -60,7 +60,7 @@ WITH gcp_data AS (
         pricing_model,
 
         -- Custom columns
-        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        {% for col in var('open_finops', {}).get('unified', {}).get('custom_columns', []) %}
         COALESCE({{ col.gcp_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
         {% endfor %}
 
@@ -122,7 +122,7 @@ WITH gcp_data AS (
         pricing_model,
 
         -- Custom columns
-        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        {% for col in var('open_finops', {}).get('unified', {}).get('custom_columns', []) %}
         COALESCE({{ col.aws_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
         {% endfor %}
 
@@ -184,7 +184,7 @@ WITH gcp_data AS (
         pricing_model,
 
         -- Custom columns
-        {% for col in var('finops_focus', {}).get('unified', {}).get('custom_columns', []) %}
+        {% for col in var('open_finops', {}).get('unified', {}).get('custom_columns', []) %}
         COALESCE({{ col.azure_source }}, "untagged") AS {{ col.name }}{{ "," if not loop.last else "" }}
         {% endfor %}
 

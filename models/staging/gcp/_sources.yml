@@ -8,15 +8,15 @@ sources:
       Configure the source location in your dbt_project.yml:
       ```yaml
       vars:
-        finops_focus:
+        open_finops:
           gcp:
             database: your-gcp-project-id
             schema: your_billing_dataset
             table_identifier: gcp_billing_export_resource_v1_XXXXXX_XXXXXX_XXXXXX
       ```
-    database: "{{ var('finops_focus', {}).get('gcp', {}).get('database', target.database) }}"
-    schema: "{{ var('finops_focus', {}).get('gcp', {}).get('schema', 'detailed_billing_data') }}"
+    database: "{{ var('open_finops', {}).get('gcp', {}).get('database', target.database) }}"
+    schema: "{{ var('open_finops', {}).get('gcp', {}).get('schema', 'detailed_billing_data') }}"
     tables:
       - name: gcp_billing_export
-        identifier: "{{ var('finops_focus', {}).get('gcp', {}).get('table_identifier', 'gcp_billing_export') }}"
+        identifier: "{{ var('open_finops', {}).get('gcp', {}).get('table_identifier', 'gcp_billing_export') }}"
         description: Raw GCP detailed billing export table with resource information

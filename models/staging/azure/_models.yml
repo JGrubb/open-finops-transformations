@@ -6,7 +6,7 @@ models:
       Staging model for Azure FOCUS exports. Extracts configured tags
       and renames columns.
 
-      This model is fully parameterized via `vars.finops_focus.azure` configuration.
+      This model is fully parameterized via `vars.open_finops.azure` configuration.
 
     columns:
       - name: billing_account_id

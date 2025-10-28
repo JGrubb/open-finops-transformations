@@ -106,10 +106,10 @@ renamed AS (
         discount_spp_discount,
         discount_total_discount,
 
-        {% for tag in var('finops_focus', {}).get('aws', {}).get('user_tags', []) %}
+        {% for tag in var('open_finops', {}).get('aws', {}).get('user_tags', []) %}
         resource_tags_user_{% if tag is mapping %}{{ tag.source }}{% else %}{{ tag }}{% endif %} AS tag_{% if tag is mapping %}{{ tag.alias }}{% else %}{{ tag }}{% endif %},
         {% endfor %}
-        {% for tag in var('finops_focus', {}).get('aws', {}).get('system_tags', []) %}
+        {% for tag in var('open_finops', {}).get('aws', {}).get('system_tags', []) %}
         resource_tags_aws_{{ tag }} AS tag_aws_{{ tag }}{{ "," if not loop.last else "" }}
         {% endfor %}
 

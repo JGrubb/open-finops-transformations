@@ -16,7 +16,7 @@ clean-targets:
   - "dbt_packages"
 
 vars:
-  finops_focus:
+  open_finops:
     # Vendor enablement - consumers MUST set this
     enabled_vendors: []  # Options: ['gcp', 'aws', 'azure']
 
@@ -61,23 +61,23 @@ vars:
       custom_columns: []  # Consumer can define tag/label mappings across vendors
 
 models:
-  dbt_finops_focus:
+  open_finops_transformations:
     staging:
       +materialized: view
-      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('staging', 'staging') }}"
+      +schema: "{{ var('open_finops', {}).get('schemas', {}).get('staging', 'staging') }}"
       gcp:
-        +enabled: "{{ 'gcp' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'gcp' in var('open_finops', {}).get('enabled_vendors', []) }}"
       aws:
-        +enabled: "{{ 'aws' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'aws' in var('open_finops', {}).get('enabled_vendors', []) }}"
       azure:
-        +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'azure' in var('open_finops', {}).get('enabled_vendors', []) }}"
     intermediate:
-      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('intermediate', 'staging') }}"
+      +schema: "{{ var('open_finops', {}).get('schemas', {}).get('intermediate', 'staging') }}"
       gcp:
-        +enabled: "{{ 'gcp' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'gcp' in var('open_finops', {}).get('enabled_vendors', []) }}"
       aws:
-        +enabled: "{{ 'aws' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'aws' in var('open_finops', {}).get('enabled_vendors', []) }}"
       azure:
-        +enabled: "{{ 'azure' in var('finops_focus', {}).get('enabled_vendors', []) }}"
+        +enabled: "{{ 'azure' in var('open_finops', {}).get('enabled_vendors', []) }}"
     unified:
-      +schema: "{{ var('finops_focus', {}).get('schemas', {}).get('unified', 'marts') }}"
+      +schema: "{{ var('open_finops', {}).get('schemas', {}).get('unified', 'marts') }}"

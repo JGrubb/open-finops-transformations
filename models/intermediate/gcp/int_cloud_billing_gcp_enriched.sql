@@ -19,10 +19,10 @@ final AS (
         usage_start_time,
         usage_end_time,
         export_time,
-        {% if var('finops_focus', {}).get('gcp', {}).get('timezone') %}
-        DATETIME(usage_start_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_start_time_local,
-        DATETIME(usage_end_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_end_time_local,
-        DATE(usage_start_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_date_local,
+        {% if var('open_finops', {}).get('gcp', {}).get('timezone') %}
+        DATETIME(usage_start_time, '{{ var("open_finops").get("gcp").get("timezone") }}') AS usage_start_time_local,
+        DATETIME(usage_end_time, '{{ var("open_finops").get("gcp").get("timezone") }}') AS usage_end_time_local,
+        DATE(usage_start_time, '{{ var("open_finops").get("gcp").get("timezone") }}') AS usage_date_local,
         {% endif %}
         invoice_publisher_type,
         service_id,
@@ -87,13 +87,13 @@ final AS (
 
         -- Project metadata
         project_ancestors,
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('labels', []) %}
         label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('project_labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('project_labels', []) %}
         project_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('system_labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('system_labels', []) %}
         system_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('/', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
         cost AS list_cost,

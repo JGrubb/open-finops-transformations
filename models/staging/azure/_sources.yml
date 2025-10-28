@@ -8,15 +8,15 @@ sources:
       Configure the source location in your dbt_project.yml:
       ```yaml
       vars:
-        finops_focus:
+        open_finops:
           azure:
             database: your-project-id
             schema: your_azure_dataset
             table_identifier: your_actual_focus_table_name
       ```
-    database: "{{ var('finops_focus', {}).get('azure', {}).get('database', target.database) }}"
-    schema: "{{ var('finops_focus', {}).get('azure', {}).get('schema', 'azure_billing_data') }}"
+    database: "{{ var('open_finops', {}).get('azure', {}).get('database', target.database) }}"
+    schema: "{{ var('open_finops', {}).get('azure', {}).get('schema', 'azure_billing_data') }}"
     tables:
       - name: azure_focus_data
-        identifier: "{{ var('finops_focus', {}).get('azure', {}).get('table_identifier', 'azure_focus_billing_data') }}"
+        identifier: "{{ var('open_finops', {}).get('azure', {}).get('table_identifier', 'azure_focus_billing_data') }}"
         description: Raw Azure FOCUS billing export table

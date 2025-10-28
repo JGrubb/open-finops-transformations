@@ -18,7 +18,7 @@ renamed AS (
         project.name AS project_name,
         project.ancestry_numbers AS project_ancestry_numbers,
         project.ancestors AS project_ancestors,
-        {% if var('finops_focus', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
+        {% if var('open_finops', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
         resource.name AS resource_name,
         resource.global_name AS resource_global_name,
         {% else %}
@@ -57,7 +57,7 @@ renamed AS (
         adjustment_info.type AS adjustment_info_type,
         consumption_model.id AS consumption_model_id,
         consumption_model.description AS consumption_model_description,
-        {% if var('finops_focus', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
+        {% if var('open_finops', {}).get('gcp', {}).get('export_type', 'standard') == 'resource' %}
         subscription.instance_id AS subscription_instance_id,
         {% else %}
         NULL AS subscription_instance_id,
@@ -102,15 +102,15 @@ renamed AS (
             FROM UNNEST(credits)
             WHERE type != 'PROMOTION'
         ) AS credits_total_less_promotions,
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('labels', []) %}
         (SELECT value FROM UNNEST(labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('project_labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('project_labels', []) %}
         (SELECT value FROM UNNEST(project.labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS project_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('-', '_') }}{% endif %},
         {% endfor %}
-        {% for label in var('finops_focus', {}).get('gcp', {}).get('system_labels', []) %}
+        {% for label in var('open_finops', {}).get('gcp', {}).get('system_labels', []) %}
         (SELECT value FROM UNNEST(system_labels) WHERE key = '{% if label is mapping %}{{ label.key }}{% else %}{{ label }}{% endif %}')
             AS system_label_{% if label is mapping %}{{ label.name }}{% else %}{{ label | replace('.', '_') | replace('/', '_') | replace('-', '_') }}{% endif %}{{ "," if not loop.last else "" }}
         {% endfor %}

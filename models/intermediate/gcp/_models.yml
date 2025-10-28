@@ -20,25 +20,25 @@ models:
       - name: usage_start_time_local
         description: |
           Usage start timestamp converted to local timezone specified in dbt_project.yml.
-          Only present when `finops_focus.gcp.timezone` is configured.
+          Only present when `open_finops.gcp.timezone` is configured.
           Example: `timezone: America/Los_Angeles`
 
       - name: usage_end_time_local
         description: |
           Usage end timestamp converted to local timezone specified in dbt_project.yml.
-          Only present when `finops_focus.gcp.timezone` is configured.
+          Only present when `open_finops.gcp.timezone` is configured.
 
       - name: usage_date_local
         description: |
           Usage date (DATE type) in local timezone specified in dbt_project.yml.
-          Only present when `finops_focus.gcp.timezone` is configured.
+          Only present when `open_finops.gcp.timezone` is configured.
 
           **Recommended for filtering:** Use this column instead of usage_start_time when you want to match
           GCP billing UI reports exactly. Configure the timezone to match your GCP Console settings:
 
           ```yaml
           vars:
-            finops_focus:
+            open_finops:
               gcp:
                 timezone: America/Los_Angeles  # Match your GCP Console timezone
           ```
@@ -127,7 +127,7 @@ models:
 
         ```yaml
         vars:
-          finops_focus:
+          open_finops:
             gcp:
               timezone: America/Los_Angeles  # Match your GCP Console timezone setting
         ```

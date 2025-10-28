@@ -8,7 +8,7 @@ models:
       Combines all enabled vendors (GCP, AWS, Azure) into a single view with
       standardized column names and a cloud_provider discriminator column.
 
-      Only compiles if at least one vendor is enabled via vars.finops_focus.enabled_vendors.
+      Only compiles if at least one vendor is enabled via vars.open_finops.enabled_vendors.
 
     columns:
       - name: cloud_provider

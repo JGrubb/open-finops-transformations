@@ -35,7 +35,7 @@ In your project's `dbt_project.yml`:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     # Enable only the vendors you use
     enabled_vendors: ['gcp', 'aws']  # Options: 'gcp', 'aws', 'azure'
 ```
@@ -46,7 +46,7 @@ Override default schema names:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp']
     schemas:
       staging: backroom        # Default: 'staging'
@@ -60,7 +60,7 @@ vars:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp']
     gcp:
       labels:
@@ -80,7 +80,7 @@ Configure which GCP billing export type you use:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp']
     gcp:
       export_type: standard  # Options: 'standard' or 'resource'
@@ -98,7 +98,7 @@ Configure timezone for date conversions to match your GCP Console billing report
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp']
     gcp:
       timezone: America/Los_Angeles  # Match your GCP Console timezone
@@ -112,7 +112,7 @@ When configured, adds timezone-aware columns: `usage_start_time_local`, `usage_e
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['aws']
     aws:
       user_tags:
@@ -126,7 +126,7 @@ vars:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['azure']
     azure:
       user_tags:
@@ -204,7 +204,7 @@ Per-vendor enriched models with FOCUS transformations:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp']
     gcp:
       labels: [team, owner, cost_center]
@@ -214,7 +214,7 @@ vars:
 
 ```yaml
 vars:
-  finops_focus:
+  open_finops:
     enabled_vendors: ['gcp', 'aws', 'azure']
     schemas:
       staging: raw

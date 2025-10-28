@@ -6,7 +6,7 @@ models:
       Staging model for AWS Cost and Usage Report. Flattens and renames
       columns, extracts configured tags.
 
-      This model is fully parameterized via `vars.finops_focus.aws` configuration.
+      This model is fully parameterized via `vars.open_finops.aws` configuration.
 
     columns:
       - name: billing_account_id

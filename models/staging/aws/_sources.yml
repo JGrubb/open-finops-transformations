@@ -8,15 +8,15 @@ sources:
       Configure the source location in your dbt_project.yml:
       ```yaml
       vars:
-        finops_focus:
+        open_finops:
           aws:
             database: your-project-id
             schema: your_cur_dataset
             table_identifier: your_actual_cur_table_name
       ```
-    database: "{{ var('finops_focus', {}).get('aws', {}).get('database', target.database) }}"
-    schema: "{{ var('finops_focus', {}).get('aws', {}).get('schema', 'aws_billing_data') }}"
+    database: "{{ var('open_finops', {}).get('aws', {}).get('database', target.database) }}"
+    schema: "{{ var('open_finops', {}).get('aws', {}).get('schema', 'aws_billing_data') }}"
     tables:
       - name: aws_cur_data
-        identifier: "{{ var('finops_focus', {}).get('aws', {}).get('table_identifier', 'aws_cur_data') }}"
+        identifier: "{{ var('open_finops', {}).get('aws', {}).get('table_identifier', 'aws_cur_data') }}"
         description: Raw AWS Cost and Usage Report billing export table
