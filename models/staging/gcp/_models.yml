@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: stg_gcp_billing__billing_exports
+    description: |
+      Staging model for GCP billing exports. Unnests nested structures and
+      extracts configured labels, project labels, and system labels.
+
+      This model is fully parameterized via `vars.gcp_billing.labels` configuration.
+
+    columns:
+      - name: billing_account_id
+        description: GCP Billing Account ID
+
+      - name: service_id
+        description: Unique identifier for the GCP service
+
+      - name: service_description
+        description: Human-readable service name (e.g., 'Compute Engine')
+
+      - name: sku_id
+        description: Unique identifier for the SKU
+
+      - name: sku_description
+        description: Human-readable SKU description
+
+      - name: usage_start_time
+        description: Start time of usage period (timestamp)
+
+      - name: usage_end_time
+        description: End time of usage period (timestamp)
+
+      - name: project_id
+        description: GCP Project ID
+
+      - name: project_number
+        description: GCP Project Number
+
+      - name: project_name
+        description: GCP Project Name
+
+      - name: resource_name
+        description: Resource name
+
+      - name: resource_global_name
+        description: Global resource identifier
+
+      - name: location_location
+        description: Location code (e.g., 'us-central1')
+
+      - name: location_country
+        description: Country code
+
+      - name: location_region
+        description: Region name
+
+      - name: location_zone
+        description: Zone name
+
+      - name: cost
+        description: Total cost before credits
+
+      - name: currency
+        description: Currency code (e.g., 'USD')
+
+      - name: cost_at_list
+        description: Cost at list price
+
+      - name: credit_committed_usage_amount
+        description: Credit amount from Committed Use Discounts (CUD)
+
+      - name: credit_flex_cud_amount
+        description: Credit amount from Flexible CUD
+
+      - name: credit_sustained_usage_amount
+        description: Credit amount from Sustained Use Discounts (SUD)
+
+      - name: credit_promotion_amount
+        description: Credit amount from promotional credits
+
+      - name: credit_discount_amount
+        description: Other discount credits
+
+      - name: credits_total
+        description: Sum of all credits
+
+      - name: credits_total_less_promotions
+        description: Sum of all credits excluding promotions
+
+      - name: usage_amount
+        description: Usage quantity
+
+      - name: usage_unit
+        description: Unit of usage measurement
+
+      - name: invoice_month
+        description: Invoice month (YYYYMM format)

@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: gcp_billing
+    description: |
+      GCP Billing Export - Detailed usage data with resource-level information.
+
+      **Required:** You must define this source in your consuming project's
+      `models/staging/_sources.yml` file with your specific project, dataset,
+      and table names.
+
+      Example:
+      ```yaml
+      sources:
+        - name: gcp_billing
+          database: your-gcp-project-id
+          schema: your_billing_dataset
+          tables:
+            - name: gcp_billing_export
+              identifier: gcp_billing_export_resource_v1_XXXXXX_XXXXXX_XXXXXX
+      ```
+
+    tables:
+      - name: gcp_billing_export
+        description: |
+          This is a placeholder. Override in your project's _sources.yml with your
+          actual GCP billing export table name using the 'identifier' property.
