@@ -1,6 +1,6 @@
-# DBT FinOps FOCUS
+# Open FinOps Transformations
 
-A unified DBT package implementing the FinOps FOCUS (FinOps Open Cost and Usage Specification) for multi-cloud billing data across GCP, AWS, and Azure.
+An open-source dbt package for transforming multi-cloud billing data (GCP, AWS, Azure) into consistent, analytics-ready formats. Built on the FinOps FOCUS (FinOps Open Cost and Usage Specification) standard with additional opinionated transformations for practical FinOps workflows.
 
 ## Overview
 
@@ -91,6 +91,22 @@ vars:
 - **`resource`**: Resource-level billing export with detailed usage data. Includes full resource identification.
 
 **Note:** Resource-level exports provide more granular data but are larger and may incur additional BigQuery costs.
+
+#### GCP Timezone Configuration (Optional)
+
+Configure timezone for date conversions to match your GCP Console billing reports:
+
+```yaml
+vars:
+  finops_focus:
+    enabled_vendors: ['gcp']
+    gcp:
+      timezone: America/Los_Angeles  # Match your GCP Console timezone
+```
+
+When configured, adds timezone-aware columns: `usage_start_time_local`, `usage_end_time_local`, and `usage_date_local` (recommended for filtering).
+
+**Why?** Raw billing timestamps are in UTC, but GCP Console uses your configured timezone for reports. Without matching timezones, your queries may include/exclude a few hours of data at month boundaries, causing slight discrepancies.
 
 #### AWS Tag Extraction
 

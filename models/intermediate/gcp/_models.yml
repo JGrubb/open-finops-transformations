@@ -1,0 +1,146 @@
+version: 2
+
+models:
+  - name: int_cloud_billing_gcp_enriched
+    description: |
+      GCP billing data enriched with FOCUS-compliant transformations, pricing model classification,
+      and discount/credit calculations. This model adds calculated fields to match GCP billing UI reports.
+
+    config:
+      materialized: view
+
+    columns:
+      # Time dimensions
+      - name: usage_start_time
+        description: Usage start timestamp (UTC)
+
+      - name: usage_end_time
+        description: Usage end timestamp (UTC)
+
+      - name: usage_start_time_local
+        description: |
+          Usage start timestamp converted to local timezone specified in dbt_project.yml.
+          Only present when `finops_focus.gcp.timezone` is configured.
+          Example: `timezone: America/Los_Angeles`
+
+      - name: usage_end_time_local
+        description: |
+          Usage end timestamp converted to local timezone specified in dbt_project.yml.
+          Only present when `finops_focus.gcp.timezone` is configured.
+
+      - name: usage_date_local
+        description: |
+          Usage date (DATE type) in local timezone specified in dbt_project.yml.
+          Only present when `finops_focus.gcp.timezone` is configured.
+
+          **Recommended for filtering:** Use this column instead of usage_start_time when you want to match
+          GCP billing UI reports exactly. Configure the timezone to match your GCP Console settings:
+
+          ```yaml
+          vars:
+            finops_focus:
+              gcp:
+                timezone: America/Los_Angeles  # Match your GCP Console timezone
+          ```
+
+          Then filter on `usage_date_local` to get identical results to the billing UI.
+
+          **Note:** Check your GCP Console timezone setting (usually in organization/billing account settings)
+          to ensure this matches.
+
+      # Cost fields
+      - name: cost
+        description: |
+          Actual cost charged (post-negotiated discounts, pre-credits).
+          This is the amount you're billed before applying credits/commitments.
+
+      - name: cost_at_list
+        description: |
+          List price cost before any discounts or credits.
+          Matches the "List cost" column in GCP billing UI reports.
+
+      - name: negotiated_savings
+        description: |
+          Contractual/negotiated discounts (negative number = savings).
+          Formula: `cost - cost_at_list`
+          Matches the "Negotiated savings" column in GCP billing UI reports.
+
+          These savings are already applied to the `cost` field and are NOT in the credits array.
+          Includes sustained use discounts and other automatic/contractual discounts.
+
+      - name: effective_cost
+        description: |
+          Final cost after all discounts and credits.
+          Formula: `cost + credits_total`
+          This is what you actually pay.
+
+      - name: billed_cost
+        description: Alias for effective_cost (FOCUS specification)
+
+      # Credits
+      - name: credits_total
+        description: |
+          Sum of all credits applied (negative number).
+          Includes CUD, flex CUD, SUD, promotions, and discounts.
+          Matches the "Savings programs" column in GCP billing UI (when excluding promotions).
+
+      - name: credit_committed_usage_amount
+        description: Committed Use Discount credits (negative)
+
+      - name: credit_flex_cud_amount
+        description: Flexible Committed Use Discount credits (negative)
+
+      - name: credit_sustained_usage_amount
+        description: Sustained Use Discount credits (negative)
+
+      - name: credit_promotion_amount
+        description: Promotional credits (negative)
+
+      - name: credit_discount_amount
+        description: Other discount credits (negative)
+
+      # Pricing classifications
+      - name: finops_pricing_model
+        description: |
+          Pricing model classification based on applied credits:
+          - 'Committed Use Discount'
+          - 'Flexible Committed Use Discount'
+          - 'Sustained Use Discount'
+          - 'On Demand'
+
+      - name: finops_usage_class
+        description: |
+          Usage class for reservation analysis:
+          - 'Reservable' - Can use commitments (e.g., Compute Engine instances)
+          - 'Non-Reservable' - Cannot use commitments
+
+      - name: finops_usage_category
+        description: |
+          High-level service categorization:
+          - 'Compute', 'Storage', 'Networking', 'Databases', 'Data and Analysis',
+          - 'Container Platform', 'Serverless', 'Management and Governance',
+          - 'Security', 'AI and Machine Learning', 'Developer Tools', 'Other'
+
+    meta:
+      timezone_config: |
+        To match GCP billing UI reports exactly, configure timezone to match your GCP Console settings:
+
+        ```yaml
+        vars:
+          finops_focus:
+            gcp:
+              timezone: America/Los_Angeles  # Match your GCP Console timezone setting
+        ```
+
+        This adds three columns for local timezone conversions:
+        - usage_start_time_local (DATETIME)
+        - usage_end_time_local (DATETIME)
+        - usage_date_local (DATE) - **Use this for filtering to match billing UI**
+
+        **Finding your GCP Console timezone:**
+        The timezone used by GCP billing reports can be configured in your organization or billing account settings.
+        Check the GCP Console to find your configured timezone, then set it here to ensure your queries
+        match the billing UI exactly.
+
+        Without timezone configuration, these columns will not be present and you'll need to
+        filter on usage_start_time (UTC), which may result in slight differences from the billing UI.

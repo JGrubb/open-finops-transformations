@@ -19,6 +19,11 @@ final AS (
         usage_start_time,
         usage_end_time,
         export_time,
+        {% if var('finops_focus', {}).get('gcp', {}).get('timezone') %}
+        DATETIME(usage_start_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_start_time_local,
+        DATETIME(usage_end_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_end_time_local,
+        DATE(usage_start_time, '{{ var("finops_focus").get("gcp").get("timezone") }}') AS usage_date_local,
+        {% endif %}
         invoice_publisher_type,
         service_id,
 
@@ -95,6 +100,10 @@ final AS (
 
         -- Calculated cost columns
         PARSE_DATE('%Y%m', invoice_month) AS invoice_month,
+
+        -- Negotiated savings (negative = savings) - matches GCP billing UI
+        cost - cost_at_list AS negotiated_savings,
+
         cost + COALESCE(credits_total, 0) AS effective_cost,
         cost + COALESCE(credits_total, 0) AS billed_cost,
 
