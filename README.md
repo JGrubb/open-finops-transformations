@@ -4,7 +4,7 @@ An open-source dbt package for transforming multi-cloud billing data (GCP, AWS, 
 
 ## Overview
 
-This package transforms raw cloud billing data into FOCUS-compliant cost and usage data with:
+This package transforms raw cloud billing data into (mostly) FOCUS-compliant cost and usage data with:
 - Unified multi-cloud billing model
 - Vendor-specific staging and intermediate models
 - Configurable vendor enablement
@@ -20,11 +20,11 @@ Add to your `packages.yml`:
 ```yaml
 packages:
   # For local development
-  - local: ../../packages/dbt-finops-focus
+  # - local: ../../packages/dbt-finops-focus
 
   # For production (once published to GitHub)
-  # - git: "https://github.com/your-org/dbt-finops-focus"
-  #   revision: v0.1.0
+  - git: "https://github.com/your-org/dbt-finops-focus"
+    revision: v0.1.0
 ```
 
 ## Configuration
@@ -134,45 +134,50 @@ vars:
         - your_project_tag
 ```
 
-### Define Source Tables
+### Configure Source Tables
 
-Each enabled vendor requires source definition in your project's `models/staging/_sources.yml`:
+Source tables are configured in your **project's `dbt_project.yml`** under the vendor-specific configuration:
 
-#### GCP Source
+#### GCP Source Configuration
 
-```yaml
-sources:
-  - name: gcp_billing
-    database: your-gcp-project-id
-    schema: your_billing_dataset
-    tables:
-      - name: gcp_billing_export
-        identifier: gcp_billing_export_resource_v1_XXXXXX_XXXXXX_XXXXXX
-```
-
-#### AWS Source
+Add to your `dbt_project.yml`:
 
 ```yaml
-sources:
-  - name: aws_billing
-    database: your-project-id
-    schema: your_cur_dataset
-    tables:
-      - name: aws_cur_data
-        identifier: your_actual_cur_table_name
+vars:
+  open_finops:
+    gcp:
+      database: your-gcp-project-id
+      schema: your_billing_dataset
+      table_identifier: gcp_billing_export_resource_v1_XXXXXX_XXXXXX_XXXXXX
 ```
 
-#### Azure Source
+#### AWS Source Configuration
+
+Add to your `dbt_project.yml`:
 
 ```yaml
-sources:
-  - name: azure_billing
-    database: your-project-id
-    schema: your_focus_dataset
-    tables:
-      - name: azure_focus_data
-        identifier: your_actual_focus_table_name
+vars:
+  open_finops:
+    aws:
+      database: your-project-id
+      schema: your_cur_dataset
+      table_identifier: your_actual_cur_table_name
 ```
+
+#### Azure Source Configuration
+
+Add to your `dbt_project.yml`:
+
+```yaml
+vars:
+  open_finops:
+    azure:
+      database: your-project-id
+      schema: your_focus_dataset
+      table_identifier: your_actual_focus_table_name
+```
+
+**Note:** If not specified, the package uses sensible defaults (target.database for database, vendor-specific schema names for schema).
 
 ## Models
 
