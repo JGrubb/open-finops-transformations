@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: aws_billing
+    description: |
+      AWS Cost and Usage Report (CUR) - Detailed billing data.
+
+      **Required:** Define this source in your consuming project's
+      `models/staging/_sources.yml` with your specific database, schema,
+      and table names.
+
+      Example:
+      ```yaml
+      sources:
+        - name: aws_billing
+          database: your-project-id
+          schema: your_cur_dataset
+          tables:
+            - name: aws_cur_data
+              identifier: your_actual_cur_table_name
+      ```
+
+    tables:
+      - name: aws_cur_data
+        description: |
+          This is a placeholder. Override in your project's _sources.yml with your
+          actual AWS CUR table name using the 'identifier' property.

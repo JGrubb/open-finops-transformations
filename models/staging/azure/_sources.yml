@@ -1,0 +1,27 @@
+version: 2
+
+sources:
+  - name: azure_billing
+    description: |
+      Azure FOCUS Export - FinOps FOCUS-compliant billing data.
+
+      **Required:** Define this source in your consuming project's
+      `models/staging/_sources.yml` with your specific database, schema,
+      and table names.
+
+      Example:
+      ```yaml
+      sources:
+        - name: azure_billing
+          database: your-project-id
+          schema: your_azure_dataset
+          tables:
+            - name: azure_focus_data
+              identifier: your_actual_focus_table_name
+      ```
+
+    tables:
+      - name: azure_focus_data
+        description: |
+          This is a placeholder. Override in your project's _sources.yml with your
+          actual Azure FOCUS table name using the 'identifier' property.

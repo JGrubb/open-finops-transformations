@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: int_cloud_billing_azure_enriched
+    description: |
+      FOCUS-compliant Azure billing data with FinOps enrichments.
+
+      Adds pricing model classification and usage categorization.
+
+    columns:
+      - name: billing_account_id
+        description: Azure billing account ID
+
+      - name: subscription_id
+        description: Azure subscription ID
+
+      - name: resource_id
+        description: Azure resource ID
+
+      - name: usage_start_time
+        description: Usage period start timestamp
+
+      - name: pricing_model
+        description: Pricing model (On-Demand, Reservation, Spot)
+
+      - name: list_cost
+        description: List cost before discounts
+
+      - name: effective_cost
+        description: Cost after discounts

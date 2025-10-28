@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: int_cloud_billing_aws_enriched
+    description: |
+      FOCUS-compliant AWS billing data with FinOps enrichments.
+
+      Adds pricing model classification, RI/SP coverage, and usage categorization.
+
+    columns:
+      - name: billing_account_id
+        description: AWS billing account ID
+
+      - name: account_id
+        description: AWS account that incurred usage
+
+      - name: resource_id
+        description: Resource ARN or ID
+
+      - name: usage_start_time
+        description: Usage period start timestamp
+
+      - name: usage_end_time
+        description: Usage period end timestamp
+
+      - name: service_name
+        description: AWS service name
+
+      - name: pricing_model
+        description: Pricing model (On-Demand, Reserved Instance, Savings Plan)
+
+      - name: list_cost
+        description: List cost before discounts
+
+      - name: effective_cost
+        description: Cost after applying discounts
+
+      - name: billed_cost
+        description: Final billed amount

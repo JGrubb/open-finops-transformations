@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: cloud_billing_unified
+    description: |
+      Unified multi-cloud billing data in FOCUS-compliant format.
+
+      Combines all enabled vendors (GCP, AWS, Azure) into a single view with
+      standardized column names and a cloud_provider discriminator column.
+
+      Only compiles if at least one vendor is enabled via vars.finops_focus.enabled_vendors.
+
+    columns:
+      - name: cloud_provider
+        description: Cloud provider identifier ('gcp', 'aws', or 'azure')
+
+      - name: billing_account_id
+        description: Billing account or payer account ID
+
+      - name: sub_account_id
+        description: Subscription, project, or account ID (vendor-specific naming)
+
+      - name: sub_account_name
+        description: Subscription, project, or account name
+
+      - name: charge_period_start
+        description: Usage period start timestamp
+
+      - name: charge_period_end
+        description: Usage period end timestamp
+
+      - name: service_name
+        description: Cloud service name
+
+      - name: region_id
+        description: Cloud region identifier
+
+      - name: region_name
+        description: Cloud region name
+
+      - name: list_cost
+        description: List cost before any discounts
+
+      - name: effective_cost
+        description: Cost after applying discounts and credits
+
+      - name: billed_cost
+        description: Final billed amount
+
+      - name: billing_currency
+        description: Currency code
+
+      - name: pricing_model
+        description: Pricing model classification (On-Demand, Reserved, Committed, etc.)
+
+      - name: resource_type
+        description: High-level usage categorization (Compute, Storage, Networking, etc.)

@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: stg_aws_billing__cur_data
+    description: |
+      Staging model for AWS Cost and Usage Report. Flattens and renames
+      columns, extracts configured tags.
+
+      This model is fully parameterized via `vars.finops_focus.aws` configuration.
+
+    columns:
+      - name: billing_account_id
+        description: AWS billing account ID
+
+      - name: line_item_usage_account_id
+        description: AWS account ID that incurred the usage
+
+      - name: line_item_usage_start_date
+        description: Start time of usage period
+
+      - name: line_item_usage_end_date
+        description: End time of usage period
+
+      - name: line_item_product_code
+        description: AWS service code
+
+      - name: product_product_name
+        description: Human-readable AWS service name
+
+      - name: line_item_resource_id
+        description: Resource ARN or ID
+
+      - name: line_item_usage_type
+        description: Usage type description
+
+      - name: pricing_term
+        description: Pricing term (OnDemand, Reserved, etc.)
+
+      - name: line_item_line_item_type
+        description: Line item type (Usage, Tax, Credit, etc.)
+
+      - name: line_item_unblended_cost
+        description: Unblended cost
+
+      - name: line_item_currency_code
+        description: Currency code
+
+      - name: bill_invoice_id
+        description: Invoice ID
+
+      - name: bill_billing_period_start_date
+        description: Billing period start date
